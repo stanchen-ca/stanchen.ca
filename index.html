@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>stancsz — Audio · Quantum · Art</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0908;
+    --bg2: #131110;
+    --border: rgba(255,255,255,0.07);
+    --accent: #c8ff47;
+    --accent2: #f0c94b;
+    --text: #f0ece4;
+    --muted: rgba(240,236,228,0.42);
+    --serif: 'Cormorant Garant', Georgia, serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    overflow-x: hidden;
+  }
+
+  /* ── canvas bg ── */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+
+  /* ── layout ── */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0 60px;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(72px, 12vw, 130px);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .hero-tagline {
+    margin-top: 36px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.55s forwards;
+  }
+
+  .hero-tagline span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-tagline span::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .scroll-hint {
+    margin-top: 80px;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: rgba(232,230,224,0.2);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+
+  /* ── section ── */
+  section {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .section-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .section-head {
+    position: sticky;
+    top: 40px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 42px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .section-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, gap 0.2s;
+  }
+
+  .section-link:hover {
+    border-color: var(--accent);
+    gap: 14px;
+  }
+
+  .section-link svg {
+    width: 10px;
+    height: 10px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+    flex-shrink: 0;
+  }
+
+  .section-body {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.85;
+    font-family: var(--mono);
+  }
+
+  .section-body p + p { margin-top: 20px; }
+
+  .tag-row {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    color: rgba(232,230,224,0.5);
+    border-radius: 2px;
+  }
+
+  .tag.hi {
+    border-color: rgba(91,232,200,0.3);
+    color: var(--accent);
+  }
+
+  /* ── music embed card ── */
+  .music-card {
+    margin-top: 28px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .music-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(91,232,200,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .music-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--accent);
+  }
+
+  .music-info {
+    flex: 1;
+  }
+
+  .music-info .ml { font-size: 12px; color: var(--text); margin-bottom: 2px; }
+  .music-info .ms { font-size: 10px; color: var(--muted); letter-spacing: 0.1em; }
+
+  .music-btn {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #0a0908;
+    background: var(--accent);
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 2px;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: opacity 0.2s;
+  }
+
+  .music-btn:hover { opacity: 0.8; }
+
+  /* ── waveform divider ── */
+  .waveform-div {
+    width: 100%;
+    height: 32px;
+    margin: 0;
+    opacity: 0.25;
+  }
+
+  /* ── footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 0 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 640px) {
+    .section-inner { grid-template-columns: 1fr; }
+    .section-head { position: static; }
+    footer { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <p class="hero-label">Portfolio · 2026</p>
+    <h1 class="hero-name">stan<br><em>csz.</em></h1>
+    <div class="hero-tagline">
+      <span>Audio Engineering</span>
+      <span>Quantum Intelligence</span>
+      <span>Artist</span>
+    </div>
+    <p class="scroll-hint">↓ scroll</p>
+  </header>
+
+  <!-- AUDIO -->
+  <section id="audio">
+    <div class="section-num reveal">01 / Audio Engineering</div>
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <h2 class="section-title">FND<br><em>Reverb</em></h2>
+        <a class="section-link" href="https://github.com/stancsz/fdnr-vst3" target="_blank" rel="noopener">
+          GitHub
+          <svg viewBox="0 0 10 10"><path d="M1 9 9 1M9 1H3M9 1v6"/></svg>
+        </a>
+      </div>
+      <div class="section-body reveal">
+        <p>Open-source modular reverb engine built on Feedback Delay Network (FDN) architecture, offering 21 unique spatial algorithms — from tight studio rooms to galaxy-scale decay. Inspired by Valhalla's VintageVerb and Room.</p>
+        <p>Written in C++17 with JUCE, targeting VST3 on Windows and macOS. Features deep modulation, integrated 3-band EQ, ducking & gating dynamics, resizable dark UI with cyan accents, and JSON preset management.</p>
+        <div class="tag-row">
+          <span class="tag hi">VST3</span>
+          <span class="tag hi">C++17</span>
+          <span class="tag">FDN DSP</span>
+          <span class="tag">JUCE</span>
+          <span class="tag">open source</span>
+          <span class="tag">21 modes</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUANTUM -->
+  <section id="quantum">
+    <div class="section-num reveal">02 / Quantum Research</div>
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <h2 class="section-title">Braid<br><em>Quantum</em></h2>
+        <a class="section-link" href="https://github.com/braid-quantum" target="_blank" rel="noopener">
+          GitHub · BA Research
+          <svg viewBox="0 0 10 10"><path d="M1 9 9 1M9 1H3M9 1v6"/></svg>
+        </a>
+      </div>
+      <div class="section-body reveal">
+        <p>Independent research under BA Research, exploring quantum intelligence systems with a focus on predictive simulation. Work includes <em>quantum-sim-see-the-future</em> — a quantum-classical hybrid simulator investigating temporal state inference.</p>
+        <p>The braid framework models entangled computational pathways, bridging quantum circuit design and machine intelligence research through Python-based experimentation.</p>
+        <div class="tag-row">
+          <span class="tag hi">Quantum ML</span>
+          <span class="tag hi">Simulation</span>
+          <span class="tag">Python</span>
+          <span class="tag">BA Research</span>
+          <span class="tag">open research</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTIST -->
+  <section id="music">
+    <div class="section-num reveal">03 / Artist</div>
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <h2 class="section-title">Music<br><em>on Spotify</em></h2>
+        <a class="section-link" href="https://open.spotify.com/artist/3Yd1ranaGvAK5wtC7muHIV?si=BuEd3z4RTzyQofHrCArGRA" target="_blank" rel="noopener">
+          Listen
+          <svg viewBox="0 0 10 10"><path d="M1 9 9 1M9 1H3M9 1v6"/></svg>
+        </a>
+      </div>
+      <div class="section-body reveal">
+        <p>The same sensibility that drives FDN reverb research and quantum simulation informs the music — spatial, textural, and rooted in architecture of sound. Stan composes and releases original work as a recording artist.</p>
+        <p>Available on Spotify and major streaming platforms. The creative practice spans production, composition, and sound design — disciplines that feed back into the engineering work.</p>
+        <a class="music-card" href="https://open.spotify.com/artist/3Yd1ranaGvAK5wtC7muHIV?si=BuEd3z4RTzyQofHrCArGRA" target="_blank" rel="noopener" style="text-decoration:none;">
+          <div class="music-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+          </div>
+          <div class="music-info">
+            <p class="ml">stancsz on Spotify</p>
+            <p class="ms">Original music · streaming now</p>
+          </div>
+          <span class="music-btn">Listen →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="reveal">
+    <span class="footer-name">stancsz.</span>
+    <ul class="footer-links">
+      <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://github.com/stancsz/fdnr-vst3" target="_blank" rel="noopener">FDNR</a></li>
+      <li><a href="https://github.com/braid-quantum" target="_blank" rel="noopener">Braid</a></li>
+      <li><a href="https://open.spotify.com/artist/3Yd1ranaGvAK5wtC7muHIV?si=BuEd3z4RTzyQofHrCArGRA" target="_blank" rel="noopener">Spotify</a></li>
+    </ul>
+  </footer>
+
+</div><!-- /wrap -->
+
+<script>
+(function() {
+  /* ── waveform canvas bg ── */
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, t = 0;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* draw 3 slow sine layers */
+    const layers = [
+      { amp: 60, freq: 0.003, speed: 0.0008, y: H * 0.35, color: '#c8ff47', lw: 0.5 },
+      { amp: 30, freq: 0.006, speed: 0.0013, y: H * 0.55, color: '#f0c94b', lw: 0.4 },
+      { amp: 80, freq: 0.002, speed: 0.0005, y: H * 0.72, color: '#c8ff47', lw: 0.3 }
+    ];
+
+    layers.forEach(function(l) {
+      ctx.beginPath();
+      ctx.strokeStyle = l.color;
+      ctx.lineWidth = l.lw;
+      ctx.globalAlpha = 0.6;
+      for (var x = 0; x <= W; x += 2) {
+        var y = l.y + Math.sin(x * l.freq + t * l.speed * 1000) * l.amp
+                     + Math.sin(x * l.freq * 2.3 + t * l.speed * 700) * l.amp * 0.3;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    });
+
+    /* faint horizontal grid */
+    ctx.globalAlpha = 0.04;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 0.5;
+    for (var gy = 0; gy < H; gy += 80) {
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(W, gy);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  /* ── scroll reveal ── */
+  var reveals = document.querySelectorAll('.reveal');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(function(el) { io.observe(el); });
+})();
+</script>
+</body>
+</html>
