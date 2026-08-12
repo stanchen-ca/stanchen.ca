@@ -1,382 +1,93 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders — Stan Chen</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg:          #f6f5f2;
-    --hero-bg:     #0d0d0b;
-    --text:        #1a1917;
-    --text-inv:    #ede9e2;
-    --muted:       #5e6370;
-    --muted-inv:   rgba(237,233,226,0.50);
-    --accent:      #1a7a6e;
-    --accent-inv:  #4ecbbd;
-    --border:      #d8d4cc;
-    --surface:     #edeae3;
-    --serif:       'Cormorant Garant', Georgia, serif;
-    --sans:        'Inter', system-ui, sans-serif;
-    --mono:        'JetBrains Mono', 'Courier New', monospace;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-weight: 300;
-    font-size: 16.5px;
-    line-height: 1.8;
-    overflow-x: hidden;
-  }
-
-  /* ── topbar ── */
-  .topbar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: var(--hero-bg);
-    padding: 0 48px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .topbar-name {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-inv);
-    text-decoration: none;
-  }
-
-  .topbar-nav {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .topbar-nav a {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted-inv);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .topbar-nav a:hover { color: var(--text-inv); }
-
-  /* ── article hero ── */
-  .hero {
-    background: var(--hero-bg);
-    padding: 132px 48px 92px;
-  }
-
-  .hero-inner {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .hero-meta {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    color: var(--accent-inv);
-    text-transform: uppercase;
-    margin-bottom: 24px;
-    opacity: 0;
-    animation: fadeUp 0.7s ease 0.1s forwards;
-    display: flex;
-    gap: 16px;
-  }
-
-  .hero-title {
-    font-family: var(--serif);
-    font-weight: 300;
-    font-size: clamp(38px, 5.5vw, 64px);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    color: var(--text-inv);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.25s forwards;
-  }
-
-  .hero-title em {
-    font-style: italic;
-    color: var(--muted-inv);
-  }
-
-  .hero-subtitle {
-    max-width: 680px;
-    font-size: 19px;
-    color: var(--muted-inv);
-    line-height: 1.6;
-    font-weight: 300;
-    opacity: 0;
-    animation: fadeUp 0.8s ease 0.4s forwards;
-  }
-
-  /* ── article container ── */
-  .article-wrap {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 64px 48px 96px;
-  }
-
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    text-decoration: none;
-    margin-bottom: 48px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.2s, gap 0.2s;
-  }
-
-  .back-btn:hover {
-    border-color: var(--accent);
-    gap: 12px;
-  }
-
-  .back-btn svg {
-    width: 12px; height: 12px;
-    stroke: var(--accent);
-    fill: none;
-    stroke-width: 1.5;
-    transform: rotate(180deg);
-  }
-
-  /* ── typography & content ── */
-  .content {
-    color: var(--text);
-  }
-
-  .content p {
-    margin-bottom: 24px;
-    font-size: 17px;
-    line-height: 1.85;
-  }
-
-  .content p strong {
-    font-weight: 500;
-    color: #000;
-  }
-
-  .content h2 {
-    font-family: var(--serif);
-    font-size: 36px;
-    font-weight: 400;
-    line-height: 1.2;
-    margin: 56px 0 24px;
-    letter-spacing: -0.01em;
-  }
-
-  .content h2 em {
-    font-style: italic;
-    color: var(--muted);
-  }
-
-  .content h3 {
-    font-family: var(--sans);
-    font-size: 20px;
-    font-weight: 600;
-    margin: 36px 0 16px;
-    color: var(--text);
-  }
-
-  /* ── callout card ── */
-  .callout-box {
-    margin: 40px 0;
-    padding: 32px;
-    background: var(--surface);
-    border-left: 3px solid var(--accent);
-    border-radius: 2px;
-  }
-
-  .callout-box h4 {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-
-  .callout-box p {
-    font-size: 15.5px;
-    color: var(--muted);
-    margin-bottom: 0;
-  }
-
-  /* ── blockquotes ── */
-  blockquote {
-    font-family: var(--serif);
-    font-size: 24px;
-    font-style: italic;
-    line-height: 1.5;
-    color: var(--muted);
-    padding-left: 24px;
-    border-left: 1px solid var(--border);
-    margin: 44px 0;
-  }
-
-  /* ── list styling ── */
-  .content ul, .content ol {
-    margin: 24px 0 32px 24px;
-  }
-
-  .content li {
-    margin-bottom: 12px;
-    font-size: 16.5px;
-    color: var(--muted);
-  }
-
-  .content li strong {
-    color: var(--text);
-  }
-
-  /* ── code styling ── */
-  pre {
-    background: var(--hero-bg);
-    color: var(--text-inv);
-    font-family: var(--mono);
-    font-size: 13.5px;
-    padding: 24px;
-    border-radius: 4px;
-    overflow-x: auto;
-    margin: 36px 0;
-    line-height: 1.6;
-    border: 1px solid rgba(255,255,255,0.05);
-  }
-
-  code {
-    font-family: var(--mono);
-    font-size: 14.5px;
-    background: var(--surface);
-    padding: 2px 6px;
-    border-radius: 3px;
-    color: var(--accent);
-  }
-
-  pre code {
-    background: none;
-    padding: 0;
-    color: inherit;
-    font-size: inherit;
-  }
-
-  /* ── footer ── */
-  footer {
-    border-top: 1px solid var(--border);
-    margin-top: 80px;
-    padding: 40px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .footer-name {
-    font-family: var(--serif);
-    font-size: 20px;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--muted);
-  }
-
-  .footer-links {
-    display: flex;
-    gap: 24px;
-    list-style: none;
-  }
-
-  .footer-links a {
-    font-family: var(--mono);
-    font-size: 12px;
-    letter-spacing: 0.10em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .footer-links a:hover { color: var(--accent); }
-
-  /* ── animations ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── responsive ── */
-  @media (max-width: 700px) {
-    .topbar     { padding: 0 24px; }
-    .topbar-nav { display: none; }
-    .hero       { padding: 110px 24px 68px; }
-    .article-wrap { padding: 44px 24px 68px; }
-    footer      { flex-direction: column; align-items: flex-start; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,follow">
+  <title>The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders — Archive — Stan Chen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500;6..72,600;6..72,400i&display=swap" rel="stylesheet">
+  <style>
+    :root { --paper:#f4f1e8; --paper-deep:#e8e2d4; --ink:#16201d; --ink-soft:#36413c; --muted:#68716a; --line:rgba(22,32,29,.18); --pine:#1d4a40; --serif:"Newsreader", Georgia, serif; --mono:"DM Mono", Consolas, monospace; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; min-width:320px; background:var(--paper); color:var(--ink); font-family:var(--serif); font-size:18px; line-height:1.5; -webkit-font-smoothing:antialiased; }
+    body::before { content:""; position:fixed; inset:0; z-index:3; pointer-events:none; opacity:.08; mix-blend-mode:multiply; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E"); }
+    a { color:inherit; }
+    a:focus-visible { outline:2px solid var(--pine); outline-offset:4px; }
+    .shell { width:min(940px, calc(100% - 64px)); margin:0 auto; }
+    .site-header { border-bottom:1px solid var(--line); }
+    .nav { min-height:66px; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+    .wordmark, .nav-links, .eyebrow, .article-meta, .archive-note-title, .footer-meta { font-family:var(--mono); font-size:10px; font-weight:500; letter-spacing:.12em; text-transform:uppercase; }
+    .wordmark { color:var(--ink); text-decoration:none; }
+    .wordmark::before { content:""; display:inline-block; width:7px; height:7px; margin-right:10px; border-radius:50%; background:var(--pine); vertical-align:1px; }
+    .nav-links { display:flex; gap:21px; }
+    .nav-links a { color:var(--muted); text-decoration:none; }
+    .nav-links a:hover { color:var(--pine); }
+    main { padding:clamp(76px, 11vw, 132px) 0 78px; }
+    .eyebrow, .article-meta, .footer-meta { color:var(--muted); }
+    .article-meta { display:flex; flex-wrap:wrap; gap:11px; margin-bottom:25px; }
+    .article-meta span:first-child { color:var(--pine); }
+    h1 { max-width:850px; margin:0 0 25px; font-size:clamp(47px, 7vw, 88px); font-weight:400; letter-spacing:-.065em; line-height:.9; }
+    .subtitle { max-width:720px; margin:0; color:var(--ink-soft); font-size:clamp(22px, 2.6vw, 31px); line-height:1.18; letter-spacing:-.02em; }
+    .archive-note { max-width:760px; margin:48px 0 55px; padding:20px 22px; border-left:2px solid var(--pine); background:rgba(29,74,64,.07); }
+    .archive-note-title { margin:0 0 7px; color:var(--pine); }
+    .archive-note p:last-child { margin:0; color:var(--ink-soft); font-size:17px; line-height:1.38; }
+    .archive-note a { color:var(--pine); text-decoration-thickness:1px; text-underline-offset:3px; }
+    .content { max-width:760px; }
+    .content > :first-child { margin-top:0; }
+    .content p { margin:0 0 25px; font-size:20px; line-height:1.6; }
+    .content h2 { margin:62px 0 19px; font-size:clamp(33px, 4vw, 48px); font-weight:400; letter-spacing:-.045em; line-height:1.02; }
+    .content h3 { margin:38px 0 14px; font-size:26px; font-weight:500; letter-spacing:-.025em; line-height:1.08; }
+    .content strong { font-weight:600; }
+    .content a { color:var(--pine); text-underline-offset:3px; text-decoration-thickness:1px; }
+    .content blockquote { margin:38px 0; padding:3px 0 3px 24px; border-left:1px solid var(--line); color:var(--ink-soft); font-size:clamp(24px, 3vw, 32px); font-style:italic; line-height:1.28; }
+    .content ul, .content ol { margin:0 0 28px; padding-left:24px; }
+    .content li { margin:0 0 12px; font-size:19px; line-height:1.5; }
+    .content pre { margin:31px 0; padding:20px; overflow:auto; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.6; }
+    .content code { padding:1px 5px; background:var(--paper-deep); color:var(--pine); font-family:var(--mono); font-size:.8em; }
+    .content pre code { padding:0; color:inherit; background:transparent; font-size:inherit; }
+    .callout-box { margin:36px 0; padding:24px; border-left:2px solid var(--pine); background:rgba(29,74,64,.07); }
+    .callout-box h4 { margin:0 0 8px; color:var(--pine); font-family:var(--mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; }
+    .callout-box p { margin:0; color:var(--ink-soft); font-size:18px; line-height:1.4; }
+    .afterword { margin-top:70px; padding-top:26px; border-top:1px solid var(--line); }
+    .afterword a { display:inline-flex; gap:9px; padding-bottom:4px; border-bottom:1px solid var(--ink); color:var(--ink); font-family:var(--mono); font-size:11px; letter-spacing:.04em; text-decoration:none; }
+    .afterword a:hover { color:var(--pine); border-color:var(--pine); }
+    footer { padding:37px 0 45px; border-top:1px solid var(--line); }
+    .footer-grid { display:flex; align-items:end; justify-content:space-between; gap:28px; }
+    .footer-note { max-width:360px; margin:8px 0 0; color:var(--ink-soft); font-size:18px; line-height:1.35; }
+    .footer-links { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:10px 20px; }
+    .footer-links a { color:var(--muted); font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-decoration:none; text-transform:uppercase; }
+    .footer-links a:hover { color:var(--pine); }
+    @media (max-width:700px) { .shell { width:min(100% - 40px, 680px); } .nav { min-height:58px; } .nav-links { gap:14px; font-size:9px; } .nav-links a:last-child { display:none; } main { padding-top:80px; } .archive-note { margin:37px 0 44px; } .content p { font-size:19px; } .footer-grid { align-items:start; flex-direction:column; } .footer-links { justify-content:flex-start; } }
+  </style>
 </head>
 <body>
-
-<!-- TOPBAR -->
-<nav class="topbar">
-  <a href="../index.html" class="topbar-name">stancsz</a>
-  <ul class="topbar-nav">
-    <li><a href="../index.html#audio">Audio</a></li>
-    <li><a href="../index.html#quantum">Quantum Agentics</a></li>
-    <li><a href="../index.html#music">Artist</a></li>
-    <li><a href="../index.html#research">Research</a></li>
-    <li><a href="../index.html#opinions">Opinions</a></li>
-    <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub ↗</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-meta">
-      <span>Essay · Analysis</span>
-      <span>June 2026</span>
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="wordmark" href="../">Stan Chen</a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../">Home</a>
+        <a href="./">Archive</a>
+        <a href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">Medium ↗</a>
+      </nav>
     </div>
-    <h1 class="hero-title">The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders</h1>
-    <p class="hero-subtitle">
-      In two years, traditional engineering headcount growth will flatline. Instead, organizations will hire architects of agentic workflows, builders of skills, and maintainers of execution environments.
-    </p>
-  </div>
-</header>
+  </header>
 
-<!-- MAIN WRAPPER -->
-<div class="article-wrap">
-  <a href="../index.html#research" class="back-btn">
-    <svg viewBox="0 0 10 10"><path d="M1 9 9 1M9 1H3M9 1v6"/></svg>
-    Back to Notes
-  </a>
+  <main class="shell">
+    <article>
+      <p class="article-meta"><span>Archived note</span><span>Essay · Analysis</span><span>June 2026</span></p>
+      <h1>The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders</h1>
+      <p class="subtitle">In two years, traditional engineering headcount growth will flatline. Instead, organizations will hire architects of agentic workflows, builders of skills, and maintainers of execution environments.</p>
 
-  <article class="content">
-    <p>For decades, the standard recipe for scaling a technology company was simple: hire more software developers. The rate of feature shipment was directly proportional to the number of engineers writing code. In 2026, this model is beginning to show cracks, and by 2028, it will be obsolete.</p>
+      <aside class="archive-note" aria-label="Archive context">
+        <p class="archive-note-title">Context</p>
+        <p>This is a dated opinion, preserved as a record rather than a current forecast. For current technical writing, visit <a href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">Medium</a>.</p>
+      </aside>
+
+      <div class="content">
+        <p>For decades, the standard recipe for scaling a technology company was simple: hire more software developers. The rate of feature shipment was directly proportional to the number of engineers writing code. In 2026, this model is beginning to show cracks, and by 2028, it will be obsolete.</p>
 <p>The core reason is simple: <strong>syntax generation has been commoditized.</strong> With LLMs writing, refactoring, and documenting code at near-zero marginal cost, the bottleneck in software development is no longer the capacity to output syntax. The new bottleneck is the capacity to coordinate, evaluate, and scale autonomous processes.</p>
 <p>We are transitioning from the era of <strong>AI as a copilot</strong> (where a human drives and the AI assists) to the era of <strong>agentic workflows</strong> (where the AI drives, and the human designs the vehicle and maps the route).</p>
 <blockquote>
@@ -440,19 +151,26 @@
 </ol>
 <p>The next two years will belong not to those who can write the code the fastest, but to those who can build the best systems to run and guide the agents who write it.</p>
 
-  </article>
+      </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <span class="footer-name">stancsz.</span>
-    <ul class="footer-links">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="https://github.com/stancsz/fdnr-vst3" target="_blank" rel="noopener">FDNR</a></li>
-      <li><a href="https://github.com/braid-quantum" target="_blank" rel="noopener">Braid</a></li>
-    </ul>
+      <div class="afterword">
+        <a href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">Read current essays on Medium ↗</a>
+      </div>
+    </article>
+  </main>
+
+  <footer class="shell">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-meta">Stan Chen · stanchen.ca</p>
+        <p class="footer-note">An archived note. Current work lives on the home page and Medium.</p>
+      </div>
+      <nav class="footer-links" aria-label="External links">
+        <a href="../">Home</a>
+        <a href="./">Archive</a>
+        <a href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">Medium ↗</a>
+      </nav>
+    </div>
   </footer>
-</div>
-
 </body>
 </html>

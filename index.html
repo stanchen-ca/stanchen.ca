@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stan Chen — useful software, clear notes, tools for sound</title>
-  <meta name="description" content="Stan Chen builds useful software, keeps clear notes, and makes tools for sound. Projects, writing, and experiments.">
+  <title>Stan Chen — tools for remembering, practicing, and making sound</title>
+  <meta name="description" content="Stan Chen makes tools for remembering, practicing, and making sound. Projects, systems, writing, and experiments.">
   <meta property="og:title" content="Stan Chen — working index">
-  <meta property="og:description" content="Useful software, clear notes, and tools for sound.">
+  <meta property="og:description" content="Tools for remembering, practicing, and making sound.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://stanchen.ca/">
   <meta name="theme-color" content="#f4f1e8">
@@ -189,6 +189,7 @@
     .quiet-link,
     .project-link,
     .route-link,
+    .system-link,
     .footer-link {
       display: inline-flex;
       align-items: center;
@@ -298,7 +299,8 @@
     }
 
     .project-link,
-    .route-link {
+    .route-link,
+    .system-link {
       padding-bottom: 4px;
       border-bottom: 1px solid currentColor;
       font-family: var(--mono);
@@ -309,6 +311,70 @@
     }
 
     .arrow { font-size: 15px; line-height: 0; }
+
+    .supporting-copy {
+      max-width: 700px;
+      margin: -7px 0 34px;
+      color: var(--ink-soft);
+      font-size: clamp(21px, 2.25vw, 29px);
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+
+    .system-list { border-top: 1px solid var(--ink); }
+
+    .system-row {
+      display: grid;
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 25px;
+      align-items: start;
+      padding: 32px 0 34px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .system-index,
+    .system-type,
+    .system-receipt {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .system-index,
+    .system-type { color: var(--muted); }
+
+    .system-row h3 {
+      max-width: 760px;
+      margin: -4px 0 10px;
+      font-size: clamp(31px, 3.8vw, 52px);
+      font-weight: 400;
+      letter-spacing: -0.055em;
+      line-height: 0.98;
+    }
+
+    .system-row > div > p:not(.system-type):not(.system-receipt) {
+      max-width: 680px;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 19px;
+      line-height: 1.36;
+    }
+
+    .system-receipt {
+      margin: 17px 0 0;
+      color: var(--pine);
+      line-height: 1.6;
+    }
+
+    .system-link {
+      align-self: center;
+      white-space: nowrap;
+      color: var(--ink);
+    }
+
+    .system-link:hover { color: var(--pine); }
 
     .writing {
       display: grid;
@@ -350,6 +416,22 @@
       color: var(--ink-soft);
       font-size: 18px;
       line-height: 1.36;
+    }
+
+    .route-more {
+      margin-top: 12px !important;
+      font-family: var(--mono);
+      font-size: 10px !important;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .route-more a {
+      color: var(--pine);
+      text-decoration: none;
+      border-bottom: 1px solid currentColor;
+      padding-bottom: 2px;
     }
 
     .route-link { align-self: center; white-space: nowrap; }
@@ -433,6 +515,11 @@
       .project-dj h3,
       .project-reverb h3 { font-size: clamp(43px, 11vw, 57px); }
 
+      .supporting-copy { max-width: 520px; }
+      .system-row { grid-template-columns: 1fr; gap: 12px; }
+      .system-row h3 { margin: 0 0 10px; }
+      .system-link { margin-top: 4px; }
+
       .writing,
       .principle { grid-template-columns: 1fr; gap: 34px; }
 
@@ -490,11 +577,11 @@
       <div>
         <p class="eyebrow">Projects · writing · sound</p>
         <h1 id="page-title">Stan <em>Chen.</em></h1>
-        <p class="hero-lead">I build useful software, keep clear notes, and make tools for sound.</p>
+        <p class="hero-lead">I make tools for remembering, practicing, and making sound.</p>
       </div>
       <aside class="hero-side" aria-label="Introduction">
         <p class="section-label">A working index</p>
-        <p>Projects with a point of view, writing from the work, and a few experiments worth keeping public.</p>
+        <p>A small collection of projects, notes, and public experiments made useful enough to keep around.</p>
         <a class="quiet-link" href="#work">See selected work <span class="arrow" aria-hidden="true">↓</span></a>
       </aside>
     </section>
@@ -512,63 +599,110 @@
         <a class="project project-brain" href="https://github.com/stancsz/second-brain" target="_blank" rel="noopener noreferrer">
           <div class="project-top">
             <span class="project-index">01</span>
-            <span class="project-type">Long Brain / Second Brain</span>
+            <span class="project-type">Local AI memory</span>
           </div>
           <div class="project-bottom">
             <h3>长脑子</h3>
-            <p>A local-first memory system for people and agents, built from plain Markdown, SQLite, and a knowledge graph.</p>
+            <p>Plain Markdown + SQLite + a zero-dependency MCP server. No cloud account or API key.</p>
           </div>
-          <span class="project-link">View Second Brain <span class="arrow" aria-hidden="true">↗</span></span>
+          <span class="project-link">Read the source <span class="arrow" aria-hidden="true">↗</span></span>
         </a>
 
         <a class="project project-dj" href="https://stancsz.github.io/djnotes/" target="_blank" rel="noopener noreferrer">
           <div class="project-top">
             <span class="project-index">02</span>
-            <span class="project-type">Field guide · 中文</span>
+            <span class="project-type">Chinese DJ field guide</span>
           </div>
           <div class="project-bottom">
             <h3>DJ Notes</h3>
-            <p>A practical Chinese guide to the DDJ-FLX4: from first setup and beatmatching to preparing to play out.</p>
+            <p>19 practical DDJ-FLX4 lessons: from first setup and beatmatching to preparing to play out.</p>
           </div>
-          <span class="project-link">Read DJ Notes <span class="arrow" aria-hidden="true">↗</span></span>
+          <span class="project-link">Open the guide <span class="arrow" aria-hidden="true">↗</span></span>
         </a>
 
         <a class="project project-reverb" href="https://github.com/stancsz/fnd-reverb-vst3" target="_blank" rel="noopener noreferrer">
           <div class="project-top">
             <span class="project-index">03</span>
-            <span class="project-type">Audio software</span>
+            <span class="project-type">Public VST3 project</span>
           </div>
           <div class="project-bottom">
             <h3>FND Reverb</h3>
-            <p>An open-source VST3 reverb built around a feedback delay network, with 21 modes for shaping space.</p>
+            <p>A Feedback Delay Network reverb with 21 modes and downloadable VST3 releases for Windows and macOS.</p>
           </div>
-          <span class="project-link">Explore the source <span class="arrow" aria-hidden="true">↗</span></span>
+          <span class="project-link">See releases &amp; source <span class="arrow" aria-hidden="true">↗</span></span>
         </a>
+      </div>
+    </section>
+
+    <section class="shell section" id="systems" aria-labelledby="systems-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-label">More public work</p>
+          <h2 id="systems-title">Tools behind the projects.</h2>
+        </div>
+        <span class="work-count">03 supporting pieces</span>
+      </div>
+      <p class="supporting-copy">A smaller set of work about verification, testing, and keeping agents useful under real constraints.</p>
+
+      <div class="system-list">
+        <article class="system-row">
+          <p class="system-index">04</p>
+          <div>
+            <p class="system-type">Evaluation &amp; routing · Python</p>
+            <h3>Inference-Time Scaling Engine</h3>
+            <p>An OpenAI-compatible gateway that spends a bounded budget to generate, verify, repair, and select one response—with an inspectable trace.</p>
+            <p class="system-receipt">Receipt: 342-case locked holdout · +4.97 points · 2.93× cost · scoped result, not a universal claim</p>
+          </div>
+          <a class="system-link" href="https://github.com/stancsz/inference-time-scaling-engine" target="_blank" rel="noopener noreferrer">Read the evidence <span class="arrow" aria-hidden="true">↗</span></a>
+        </article>
+
+        <article class="system-row">
+          <p class="system-index">05</p>
+          <div>
+            <p class="system-type">Quality &amp; testing · Claude Code skill</p>
+            <h3>Spec-Driven QA</h3>
+            <p>A pipeline that turns a PRD into a classical test backbone, AI rubrics, executed checks, and a clear ship / hold decision.</p>
+            <p class="system-receipt">Classical boundary coverage first; AI and OWASP probes only where they apply.</p>
+          </div>
+          <a class="system-link" href="https://github.com/stancsz/spec-driven-qa-skill" target="_blank" rel="noopener noreferrer">Read the skill <span class="arrow" aria-hidden="true">↗</span></a>
+        </article>
+
+        <article class="system-row">
+          <p class="system-index">06</p>
+          <div>
+            <p class="system-type">Reference · field manual</p>
+            <h3>The AI Agent Handbook</h3>
+            <p>Practical public guidance for building and operating AI agents, with clear receipts for what has been run, measured, or is still pending.</p>
+            <p class="system-receipt">Build smaller · verify everything · keep the evidence visible</p>
+          </div>
+          <a class="system-link" href="https://stancsz.github.io/handbook/" target="_blank" rel="noopener noreferrer">Open the handbook <span class="arrow" aria-hidden="true">↗</span></a>
+        </article>
       </div>
     </section>
 
     <section class="shell section writing" id="writing" aria-labelledby="writing-title">
       <div class="writing-intro">
         <p class="section-label">Writing</p>
-        <h2 id="writing-title">Two places to keep up.</h2>
-        <p>Longer systems thinking goes one way; shorter notes and work in progress go the other.</p>
+        <h2 id="writing-title">Writing, in public.</h2>
+        <p>Longer technical essays on Medium; looser notes only when they are ready to leave the notebook.</p>
       </div>
 
       <div class="writing-routes">
         <article class="route">
           <p class="route-label">Essays / Medium</p>
           <div>
-            <h3>Longer technical writing.</h3>
-            <p>Data platforms, AI workflows, and lessons from building systems that need to hold up in practice.</p>
+            <h3>Build the workflow before the platform.</h3>
+            <p>Why capable teams can spend heavily on enterprise AI platforms without delivering visible business value.</p>
+            <p class="route-more"><a href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">All essays on Medium ↗</a></p>
           </div>
-          <a class="route-link" href="https://stancsz.medium.com/" target="_blank" rel="noopener noreferrer">Read on Medium <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="route-link" href="https://levelup.gitconnected.com/build-the-workflow-before-the-agentic-data-platform-f12b16c104fd" target="_blank" rel="noopener noreferrer">Read the essay <span class="arrow" aria-hidden="true">↗</span></a>
         </article>
 
         <article class="route">
           <p class="route-label">Dispatches / Substack</p>
           <div>
-            <h3>Shorter notes, closer to the work.</h3>
-            <p>Updates, unfinished thoughts, and things worth passing on before they turn into an essay.</p>
+            <h3>Infrequent notes, closer to the work.</h3>
+            <p>Short updates, unfinished thoughts, and things worth passing on before they turn into an essay.</p>
           </div>
           <a class="route-link" href="https://stancsz.substack.com/" target="_blank" rel="noopener noreferrer">Visit Substack <span class="arrow" aria-hidden="true">↗</span></a>
         </article>
@@ -585,7 +719,7 @@
     <div class="footer-grid">
       <div>
         <p class="footer-meta">Stan Chen · stanchen.ca</p>
-        <p class="footer-note">Useful software, clear notes, and tools for sound.</p>
+        <p class="footer-note">Tools for remembering, practicing, and making sound.</p>
       </div>
       <nav class="footer-links" aria-label="External links">
         <a class="footer-link" href="https://github.com/stancsz" target="_blank" rel="noopener noreferrer">GitHub ↗</a>

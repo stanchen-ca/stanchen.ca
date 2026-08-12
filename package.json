@@ -1,7 +1,7 @@
 {
   "name": "stanchen.ca",
   "version": "1.0.0",
-  "description": "Stan Chen's personal website & citizen research log",
+  "description": "Stan Chen's working index: projects, systems, writing, and sound.",
   "main": "build.js",
   "scripts": {
     "build": "node build.js"
