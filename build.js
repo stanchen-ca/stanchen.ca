@@ -170,15 +170,11 @@ function build() {
   if (researchRegex.test(indexContent)) {
     indexContent = indexContent.replace(researchRegex, `$1\n${researchListHtml}\n      $3`);
     console.log('Successfully updated research section in index.html!');
-  } else {
-    console.warn('WARNING: Could not find <!-- RESEARCH_START --> and <!-- RESEARCH_END --> markers in index.html.');
   }
 
   if (opinionsRegex.test(indexContent)) {
     indexContent = indexContent.replace(opinionsRegex, `$1\n${opinionsListHtml}\n      $3`);
     console.log('Successfully updated opinions section in index.html!');
-  } else {
-    console.warn('WARNING: Could not find <!-- OPINIONS_START --> and <!-- OPINIONS_END --> markers in index.html.');
   }
 
   fs.writeFileSync(INDEX_PATH, indexContent, 'utf8');
