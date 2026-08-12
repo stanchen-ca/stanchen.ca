@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Citizen Research — Stan Chen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:          #f6f5f2;
+    --hero-bg:     #0d0d0b;
+    --text:        #1a1917;
+    --text-inv:    #ede9e2;
+    --muted:       #5e6370;
+    --muted-inv:   rgba(237,233,226,0.50);
+    --accent:      #1a7a6e;
+    --accent-inv:  #4ecbbd;
+    --border:      #d8d4cc;
+    --surface:     #edeae3;
+    --serif:       'Cormorant Garant', Georgia, serif;
+    --sans:        'Inter', system-ui, sans-serif;
+    --mono:        'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── topbar ── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--hero-bg);
+    padding: 0 48px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-inv);
+    text-decoration: none;
+  }
+
+  .topbar-nav {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .topbar-nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-inv);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .topbar-nav a:hover { color: var(--text-inv); }
+
+  /* ── hero ── */
+  .hero {
+    background: var(--hero-bg);
+    padding: 132px 48px 92px;
+  }
+
+  .hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted-inv);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.1s forwards;
+  }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(52px, 7.5vw, 94px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--text-inv);
+    margin-bottom: 36px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.25s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--muted-inv);
+  }
+
+  .hero-bio {
+    max-width: 520px;
+    font-size: 16.5px;
+    color: var(--muted-inv);
+    line-height: 1.78;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  /* ── layout wrap ── */
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 48px 96px;
+  }
+
+  /* ── section ── */
+  section {
+    padding: 76px 0;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 44px;
+  }
+
+  .section-inner {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .section-head {
+    position: sticky;
+    top: 76px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 46px;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .section-title em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .section-body {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* ── research list ── */
+  .research-item {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+  }
+
+  .research-item:first-child { border-top: none; padding-top: 0; }
+
+  .research-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.10em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 14px;
+  }
+
+  .research-type { color: var(--accent); }
+
+  .research-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .research-title a {
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .research-title a:hover { border-color: var(--text); }
+
+  .research-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  /* ── footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 700px) {
+    .topbar     { padding: 0 24px; }
+    .topbar-nav { display: none; }
+    .hero       { padding: 110px 24px 68px; }
+    .wrap       { padding: 0 24px; }
+    .section-inner { grid-template-columns: 1fr; gap: 24px; }
+    .section-head  { position: static; }
+    footer      { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="../index.html" class="topbar-name">stancsz</a>
+  <ul class="topbar-nav">
+    <li><a href="../index.html#audio">Audio</a></li>
+    <li><a href="../index.html#quantum">Quantum Agentics</a></li>
+    <li><a href="../index.html#music">Artist</a></li>
+    <li><a href="../index.html#research">Research</a></li>
+    <li><a href="../index.html#opinions">Opinions</a></li>
+    <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Citizen Research · Field Notes</p>
+    <h1 class="hero-name">Writing &amp; <em>Analysis</em></h1>
+    <p class="hero-bio">
+      Data-driven investigations, research summaries, and essays on technology, systems engineering, and open-source infrastructure.
+    </p>
+  </div>
+</header>
+
+<!-- MAIN CONTENT WRAPPER -->
+<div class="wrap">
+  <section id="posts-archive">
+    <div class="section-label">Field Notes / All Posts</div>
+    <div class="section-inner">
+      <div class="section-head">
+        <h2 class="section-title">All<br><em>Entries</em></h2>
+      </div>
+      <div class="section-body">
+        <div class="research-list">
+          {{content}}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">stancsz.</span>
+    <ul class="footer-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://github.com/stancsz/fdnr-vst3" target="_blank" rel="noopener">FDNR</a></li>
+      <li><a href="https://github.com/braid-quantum" target="_blank" rel="noopener">Braid</a></li>
+    </ul>
+  </footer>
+</div>
+
+</body>
+</html>

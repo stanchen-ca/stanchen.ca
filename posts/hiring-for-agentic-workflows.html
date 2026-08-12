@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders — Stan Chen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:          #f6f5f2;
+    --hero-bg:     #0d0d0b;
+    --text:        #1a1917;
+    --text-inv:    #ede9e2;
+    --muted:       #5e6370;
+    --muted-inv:   rgba(237,233,226,0.50);
+    --accent:      #1a7a6e;
+    --accent-inv:  #4ecbbd;
+    --border:      #d8d4cc;
+    --surface:     #edeae3;
+    --serif:       'Cormorant Garant', Georgia, serif;
+    --sans:        'Inter', system-ui, sans-serif;
+    --mono:        'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 300;
+    font-size: 16.5px;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* ── topbar ── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--hero-bg);
+    padding: 0 48px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-inv);
+    text-decoration: none;
+  }
+
+  .topbar-nav {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .topbar-nav a {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted-inv);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .topbar-nav a:hover { color: var(--text-inv); }
+
+  /* ── article hero ── */
+  .hero {
+    background: var(--hero-bg);
+    padding: 132px 48px 92px;
+  }
+
+  .hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent-inv);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.1s forwards;
+    display: flex;
+    gap: 16px;
+  }
+
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(38px, 5.5vw, 64px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text-inv);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.25s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--muted-inv);
+  }
+
+  .hero-subtitle {
+    max-width: 680px;
+    font-size: 19px;
+    color: var(--muted-inv);
+    line-height: 1.6;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  /* ── article container ── */
+  .article-wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 64px 48px 96px;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+    margin-bottom: 48px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s, gap 0.2s;
+  }
+
+  .back-btn:hover {
+    border-color: var(--accent);
+    gap: 12px;
+  }
+
+  .back-btn svg {
+    width: 12px; height: 12px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+    transform: rotate(180deg);
+  }
+
+  /* ── typography & content ── */
+  .content {
+    color: var(--text);
+  }
+
+  .content p {
+    margin-bottom: 24px;
+    font-size: 17px;
+    line-height: 1.85;
+  }
+
+  .content p strong {
+    font-weight: 500;
+    color: #000;
+  }
+
+  .content h2 {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 56px 0 24px;
+    letter-spacing: -0.01em;
+  }
+
+  .content h2 em {
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .content h3 {
+    font-family: var(--sans);
+    font-size: 20px;
+    font-weight: 600;
+    margin: 36px 0 16px;
+    color: var(--text);
+  }
+
+  /* ── callout card ── */
+  .callout-box {
+    margin: 40px 0;
+    padding: 32px;
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+  }
+
+  .callout-box h4 {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .callout-box p {
+    font-size: 15.5px;
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  /* ── blockquotes ── */
+  blockquote {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--muted);
+    padding-left: 24px;
+    border-left: 1px solid var(--border);
+    margin: 44px 0;
+  }
+
+  /* ── list styling ── */
+  .content ul, .content ol {
+    margin: 24px 0 32px 24px;
+  }
+
+  .content li {
+    margin-bottom: 12px;
+    font-size: 16.5px;
+    color: var(--muted);
+  }
+
+  .content li strong {
+    color: var(--text);
+  }
+
+  /* ── code styling ── */
+  pre {
+    background: var(--hero-bg);
+    color: var(--text-inv);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    padding: 24px;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 36px 0;
+    line-height: 1.6;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 14.5px;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  /* ── footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+    padding: 40px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .footer-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  /* ── animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 700px) {
+    .topbar     { padding: 0 24px; }
+    .topbar-nav { display: none; }
+    .hero       { padding: 110px 24px 68px; }
+    .article-wrap { padding: 44px 24px 68px; }
+    footer      { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="../index.html" class="topbar-name">stancsz</a>
+  <ul class="topbar-nav">
+    <li><a href="../index.html#audio">Audio</a></li>
+    <li><a href="../index.html#quantum">Quantum Agentics</a></li>
+    <li><a href="../index.html#music">Artist</a></li>
+    <li><a href="../index.html#research">Research</a></li>
+    <li><a href="../index.html#opinions">Opinions</a></li>
+    <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub ↗</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <span>Essay · Analysis</span>
+      <span>June 2026</span>
+    </div>
+    <h1 class="hero-title">The Shift to Agentic Hiring: Why We'll Hire Orchestrators, Not Coders</h1>
+    <p class="hero-subtitle">
+      In two years, traditional engineering headcount growth will flatline. Instead, organizations will hire architects of agentic workflows, builders of skills, and maintainers of execution environments.
+    </p>
+  </div>
+</header>
+
+<!-- MAIN WRAPPER -->
+<div class="article-wrap">
+  <a href="../index.html#research" class="back-btn">
+    <svg viewBox="0 0 10 10"><path d="M1 9 9 1M9 1H3M9 1v6"/></svg>
+    Back to Notes
+  </a>
+
+  <article class="content">
+    <p>For decades, the standard recipe for scaling a technology company was simple: hire more software developers. The rate of feature shipment was directly proportional to the number of engineers writing code. In 2026, this model is beginning to show cracks, and by 2028, it will be obsolete.</p>
+<p>The core reason is simple: <strong>syntax generation has been commoditized.</strong> With LLMs writing, refactoring, and documenting code at near-zero marginal cost, the bottleneck in software development is no longer the capacity to output syntax. The new bottleneck is the capacity to coordinate, evaluate, and scale autonomous processes.</p>
+<p>We are transitioning from the era of <strong>AI as a copilot</strong> (where a human drives and the AI assists) to the era of <strong>agentic workflows</strong> (where the AI drives, and the human designs the vehicle and maps the route).</p>
+<blockquote>
+<p>&quot;Hiring will pivot. We will stop interviewing for typing speed or language syntax familiarity. Instead, we will hire engineers who can design agentic workflows, build reusable agent skills, and maintain the complex sandboxed environments where they execute.&quot;</p>
+</blockquote>
+<h2>The Shift from Simple LLM Prompts to <em>Compound Systems</em></h2>
+<p>In the early stages of the generative AI boom, applications relied on zero-shot or few-shot prompts. You sent a prompt, and you got back a completion. We quickly discovered that for complex, non-trivial engineering tasks, zero-shot generation fails.</p>
+<p>As industry leaders like Andrew Ng and Andrej Karpathy have noted, the most powerful AI applications are not single model calls; they are <strong>compound AI systems</strong>. These are iterative, state-driven agentic architectures that incorporate:</p>
+<ul>
+<li><strong>Reflection:</strong> Having an agent review and critique its own code output before running it.</li>
+<li><strong>Planning:</strong> Breaking a large goal down into a tree or graph of sub-tasks.</li>
+<li><strong>Tool Use:</strong> Allowing the agent to run terminal commands, search databases, and call APIs.</li>
+<li><strong>Multi-agent collaboration:</strong> Having separate agents act as a developer, a code reviewer, and a product manager.</li>
+</ul>
+<p>When an LLM is embedded within an agentic workflow, it can achieve productivity gains that dwarf zero-shot prompt improvements. This architectural shift creates three distinct pillars of modern software engineering.</p>
+<div class="callout-box">
+  <h4>Insight</h4>
+  <p>A compound AI system orchestrates tools, memory, and specialized subagents. Designing this cognitive architecture is the new "system design" interview.</p>
+</div>
+
+<h2>The Three Pillars of the <em>Agentic Workforce</em></h2>
+<p>If agents are doing the coding, what do the humans do? The engineering department of tomorrow will focus almost entirely on three key domains.</p>
+<h3>1. Agentic Workflow Architects (Orchestration)</h3>
+<p>Workflows are the brains of agentic systems. A Workflow Architect designs the state machine, graph topology, and agent routing logic that dictates how an autonomous system completes a task.</p>
+<p>These engineers model agent behaviors: When should a subagent spawn? How is information passed between a researcher agent and a coder agent? How do we integrate <strong>human-in-the-loop (HITL)</strong> checkpoints to prevent agents from running amok while ensuring they aren&#39;t constantly blocked by human latency?</p>
+<p>Equally important is the science of <strong>Evaluations (Evals)</strong>. Workflow Architects build automated suites that test agent outputs, ensuring that as models update, the agentic pipeline does not regress.</p>
+<h3>2. Skill Developers (Tooling)</h3>
+<p>An AI agent without tools is just a language predictor. To affect the physical or digital world, agents need &quot;skills&quot;—structured code definitions that wrap APIs, database actions, or CLI commands.</p>
+<p>For example, a skill might give an agent the ability to query a dbSNP database for genomic variants or run a Web search. Skill Developers write these integrations, specifying exact inputs, output schemas, and error-handling mechanisms. They ensure the tools are descriptive enough for an LLM to select them dynamically and robust enough not to break when given edge cases.</p>
+<pre><code class="language-json">// Example of a structured &quot;Skill&quot; schema an agent consumes
+{
+  &quot;name&quot;: &quot;query_database&quot;,
+  &quot;description&quot;: &quot;Searches the primary database for user profiles.&quot;,
+  &quot;parameters&quot;: {
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+      &quot;user_id&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;The unique UUID of the user.&quot; }
+    },
+    &quot;required&quot;: [&quot;user_id&quot;]
+  }
+}
+</code></pre>
+<h3>3. Runtime &amp; Sandbox Reliability Engineers (Systems)</h3>
+<p>Autonomous agents execute code, write files, and run commands. Letting them do this directly on production servers or local user machines is a massive security and stability risk.</p>
+<p>Systems Engineers must build and maintain secure, ephemeral, and isolated execution runtimes (typically Docker-based sandboxes or microVMs). These systems must handle:</p>
+<ul>
+<li><strong>Resource Constraints:</strong> Preventing infinite loops from draining compute budgets.</li>
+<li><strong>State Management:</strong> Saving and restoring disk states during multi-hour runs.</li>
+<li><strong>Network Access:</strong> Restricting internet usage to prevent data exfiltration while permitting authorized API calls.</li>
+<li><strong>Cost &amp; Rate Limit Optimization:</strong> Mitigating token costs and handling LLM API rate limits gracefully.</li>
+</ul>
+<h2>The Economics of the <em>Leveraged Engineer</em></h2>
+<p>This transition does not mean software engineers will disappear; it means their leverage will increase by orders of magnitude.</p>
+<p>In a traditional team, a senior engineer spends substantial time mentoring juniors, writing boilerplate code, and reviewing simple PRs. In an agent-first team, a single senior engineer operates as a <strong>Conductor</strong>. By directing a suite of agents equipped with custom-built skills, they can build, deploy, and monitor products that previously required a team of ten.</p>
+<p>Hiring managers will no longer ask, &quot;How many react developers do we have?&quot; They will ask, &quot;How complete is our Agentic Skill Registry, and how high is the success rate of our workflow test suites?&quot;</p>
+<h2>Preparing for the <em>Agentic Transition</em></h2>
+<p>To survive and thrive in this landscape, both engineers and companies must shift their focus:</p>
+<ol>
+<li><strong>For Engineers:</strong> Move up the abstraction stack. Learn to think in terms of state machines, data flow graphs, and system prompt architectures. Practice building custom tools (MCP servers, custom API integrations) rather than manually writing standard CRUD routes.</li>
+<li><strong>For Engineering Leaders:</strong> Focus on building the infrastructure. Invest in sandbox safety, robust evaluation datasets, and CI/CD pipelines optimized for agentic runs. Prioritize hiring &quot;systems thinkers&quot; who can design workflows over &quot;specialists&quot; who only know a specific syntax.</li>
+</ol>
+<p>The next two years will belong not to those who can write the code the fastest, but to those who can build the best systems to run and guide the agents who write it.</p>
+
+  </article>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">stancsz.</span>
+    <ul class="footer-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="https://github.com/stancsz" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://github.com/stancsz/fdnr-vst3" target="_blank" rel="noopener">FDNR</a></li>
+      <li><a href="https://github.com/braid-quantum" target="_blank" rel="noopener">Braid</a></li>
+    </ul>
+  </footer>
+</div>
+
+</body>
+</html>
