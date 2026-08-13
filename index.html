@@ -140,6 +140,18 @@
     .work-link { align-self: center; white-space: nowrap; color: var(--cream); }
     .work-link:hover { color: var(--clay); }
 
+    .recent-section { background: var(--paper-deep); }
+    .recent-section .section-kicker { color: var(--pine); }
+    .recent-section .section-note { color: var(--ink-soft); }
+    .recent-list { border-top: 1px solid var(--line); }
+    .recent-item { display: grid; grid-template-columns: 62px minmax(0, 1fr) auto; gap: 26px; align-items: start; padding: 24px 0 26px; border-bottom: 1px solid var(--line); }
+    .recent-number, .recent-type { color: var(--muted); font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+    .recent-item h3 { max-width: 700px; margin: -5px 0 9px; font-size: clamp(28px, 3.6vw, 48px); font-weight: 400; letter-spacing: -.06em; line-height: .96; }
+    .recent-item p { max-width: 700px; margin: 0; color: var(--ink-soft); font-size: 18px; line-height: 1.35; }
+    .recent-receipt { margin-top: 12px !important; color: var(--pine) !important; font-family: var(--mono); font-size: 10px !important; letter-spacing: .035em; }
+    .recent-link { align-self: center; white-space: nowrap; }
+    .recent-link:hover { color: var(--pine); }
+
     .notes-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(45px, 10vw, 150px); align-items: start; }
     .notes-intro h2 { max-width: 390px; margin: 15px 0 20px; font-size: clamp(45px, 5.5vw, 70px); font-weight: 400; letter-spacing: -.075em; line-height: .9; }
     .notes-intro p { max-width: 340px; margin: 0; color: var(--ink-soft); font-size: 19px; line-height: 1.35; }
@@ -197,9 +209,9 @@
       .section-note { margin-top: 22px; }
       .interest-grid { grid-template-columns: 1fr; }
       .interest-card { min-height: 238px; }
-      .work-item, .note { grid-template-columns: 1fr; gap: 12px; }
-      .work-item h3, .note h3 { margin: 0 0 8px; }
-      .work-link, .note .text-link { justify-self: start; margin-top: 6px; }
+      .work-item, .recent-item, .note { grid-template-columns: 1fr; gap: 12px; }
+      .work-item h3, .recent-item h3, .note h3 { margin: 0 0 8px; }
+      .work-link, .recent-link, .note .text-link { justify-self: start; margin-top: 6px; }
       .closing { padding: 54px 0 62px; }
       .footer-grid { align-items: start; flex-direction: column; }
       .footer-links { justify-content: flex-start; }
@@ -319,7 +331,7 @@
         <div class="work-list">
           <article class="work-item">
             <p class="work-number">01</p>
-            <div><p class="work-type"><span data-lang="en">Local AI memory</span><span data-lang="zh">本地 AI 记忆</span></p><h3><span data-lang="en">长脑子 / Second Brain</span><span data-lang="zh">长脑子 / Second Brain</span></h3><p><span data-lang="en">Plain Markdown + SQLite + a zero-dependency MCP server. A private memory layer without a cloud account.</span><span data-lang="zh">纯 Markdown + SQLite，MCP server 零依赖；不用云端账号，记忆留在本地。</span></p><p class="work-receipt"><span data-lang="en">Private by default · inspectable source</span><span data-lang="zh">默认本地 · 源码可看</span></p></div>
+            <div><p class="work-type"><span data-lang="en">Local AI memory</span><span data-lang="zh">本地 AI 记忆</span></p><h3><span data-lang="en">长脑子 / Second Brain</span><span data-lang="zh">长脑子 / Second Brain</span></h3><p><span data-lang="en">One local memory for Claude, Codex, Gemini, OpenCode, and Cline. Markdown stays canonical; SQLite is a rebuildable index.</span><span data-lang="zh">给 Claude、Codex、Gemini、OpenCode 和 Cline 共用的一份本地记忆。Markdown 是原件，SQLite 只是可重建的索引。</span></p><p class="work-receipt"><span data-lang="en">262 tests · 5 agent hosts · MIT</span><span data-lang="zh">262 个测试 · 5 个 agent host · MIT</span></p></div>
             <a class="text-link work-link" href="https://github.com/stancsz/second-brain" target="_blank" rel="noopener noreferrer"><span data-lang="en">Read source</span><span data-lang="zh">看源码</span> ↗</a>
           </article>
           <article class="work-item">
@@ -331,6 +343,40 @@
             <p class="work-number">03</p>
             <div><p class="work-type"><span data-lang="en">Quality &amp; testing</span><span data-lang="zh">质量与测试</span></p><h3><span data-lang="en">Spec-Driven QA</span><span data-lang="zh">从需求到测试</span></h3><p><span data-lang="en">A pipeline that turns a product spec into executable checks, AI rubrics, and a clear ship-or-hold decision.</span><span data-lang="zh">把产品需求拆成可执行测试和 AI 评分规则，最后明确该不该发布。</span></p><p class="work-receipt"><span data-lang="en">Classical boundary coverage first</span><span data-lang="zh">先做传统测试，再加 AI 检查</span></p></div>
             <a class="text-link work-link" href="https://github.com/stancsz/spec-driven-qa-skill" target="_blank" rel="noopener noreferrer"><span data-lang="en">Read the skill</span><span data-lang="zh">看这个 Skill</span> ↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="recent-section" aria-labelledby="recent-title">
+      <div class="shell section">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker"><span data-lang="en">Recently public</span><span data-lang="zh">最近公开的东西</span></p>
+            <h2 id="recent-title"><span data-lang="en">The work that moved lately.</span><span data-lang="zh">这两周，真正动起来的项目。</span></h2>
+          </div>
+          <p class="section-note"><span data-lang="en">A few releases and contributions that were missing from this page.</span><span data-lang="zh">这几项最近有实际提交、发布或上线，不该继续藏在 GitHub 活动流里。</span></p>
+        </div>
+        <div class="recent-list">
+          <article class="recent-item">
+            <p class="recent-number">01</p>
+            <div><p class="recent-type"><span data-lang="en">Open-source narrative system</span><span data-lang="zh">开源叙事系统</span></p><h3><span data-lang="en">Open Souls / 众魂</span><span data-lang="zh">Open Souls / 众魂</span></h3><p><span data-lang="en">Send in a character as a soul.md; a planner, writer, and editor keep a traceable group serial alive across seasons.</span><span data-lang="zh">把一个角色写成 soul.md 送进来，策划、写手和审校一起把一部群像连载继续写下去。</span></p><p class="recent-receipt"><span data-lang="en">Public Pages · issue or PR entry · traceable character dossiers</span><span data-lang="zh">公开 Pages · Issue 或 PR 都能投稿 · 角色档案可追</span></p></div>
+            <a class="text-link recent-link" href="https://open-souls.github.io/open-souls/" target="_blank" rel="noopener noreferrer"><span data-lang="en">Enter the world</span><span data-lang="zh">进入这个世界</span> ↗</a>
+          </article>
+          <article class="recent-item">
+            <p class="recent-number">02</p>
+            <div><p class="recent-type"><span data-lang="en">Spec-first product contracts</span><span data-lang="zh">从规格到发布</span></p><h3><span data-lang="en">SpecPort</span><span data-lang="zh">SpecPort</span></h3><p><span data-lang="en">A CLI for repository-to-spec packets, deterministic coverage, contract checks, and evidence-bound production handoffs.</span><span data-lang="zh">把仓库、规格、覆盖检查和发布证据串起来的 CLI：先看清楚，再决定该不该交付。</span></p><p class="recent-receipt"><span data-lang="en">@specport/specport 0.1.2 · npm latest · Pages live</span><span data-lang="zh">@specport/specport 0.1.2 · npm latest · 项目页已上线</span></p></div>
+            <a class="text-link recent-link" href="https://specport.github.io/" target="_blank" rel="noopener noreferrer"><span data-lang="en">Open SpecPort</span><span data-lang="zh">看 SpecPort</span> ↗</a>
+          </article>
+          <article class="recent-item">
+            <p class="recent-number">03</p>
+            <div><p class="recent-type"><span data-lang="en">Ableton Live contribution</span><span data-lang="zh">Ableton Live 贡献</span></p><h3><span data-lang="en">AbletonMCP</span><span data-lang="zh">AbletonMCP</span></h3><p><span data-lang="en">Skills that let an agent help with vocal production and Gemini-based mix feedback inside an Ableton workflow.</span><span data-lang="zh">给 Ableton 工作流补上 vocal production 和 Gemini 混音反馈这两块能力。</span></p><p class="recent-receipt"><span data-lang="en">2 public skill additions · upstream repo</span><span data-lang="zh">新增 2 个公开 skill · 基于上游项目</span></p></div>
+            <a class="text-link recent-link" href="https://github.com/stancsz/ableton-mcp" target="_blank" rel="noopener noreferrer"><span data-lang="en">See the contribution</span><span data-lang="zh">看这次贡献</span> ↗</a>
+          </article>
+          <article class="recent-item">
+            <p class="recent-number">04</p>
+            <div><p class="recent-type"><span data-lang="en">A practical field guide</span><span data-lang="zh">实战手册</span></p><h3><span data-lang="en">The AI Agent Handbook</span><span data-lang="zh">AI Agent 实战手册</span></h3><p><span data-lang="en">A 15-chapter core edition plus a larger corpus: bounded workflows, receipts, failure modes, and what survives production.</span><span data-lang="zh">15 章的核心版，加上一整套可检索的资料：工作流、证据、失败模式，以及真正能撑到生产的做法。</span></p><p class="recent-receipt"><span data-lang="en">15 chapters · receipts first · bilingual corpus</span><span data-lang="zh">15 章 · 证据优先 · 中英双语资料库</span></p></div>
+            <a class="text-link recent-link" href="https://stancsz.github.io/handbook/" target="_blank" rel="noopener noreferrer"><span data-lang="en">Read the handbook</span><span data-lang="zh">看这本手册</span> ↗</a>
           </article>
         </div>
       </div>
